@@ -1,0 +1,67 @@
+Summary
+-------
+
+This script synchronizes a music collection recursively one way from a 
+lossless format source directory to a lossy file format target directory.
+
+Details
+-------
+
+It is for example useful when you have a music collection in flac or wav 
+format and want to keep a copy on a mp3 player with the same file and 
+directory structure but with mp3/ogg files instead of the original flac files.
+
+The target format can be specified. Currently supported targets are mp3 and ogg. 
+mp3 is the default target.
+
+The source directory is walked recursively:
+
+If the filename exists on the target nothing is done 
+(the file contents itself are not compared), otherwise files are converted:
+
+  * flac converted to target format, some id3 Tags are copied too
+  * wav converted to target format
+  * ogg unchanged copied to target
+  * mp3 unchanged copied to target
+  * m3u, jpg unchanged copied to target
+  * Volume is adjusted with mp3gain if target format is mp3
+
+Missing directories on the target are created.
+The type of file is determined by its extension.
+The source and target directories must exist.
+
+lame, flac, metaflac, mp3gain has to be installed for mp3 target
+flac, vorbis-tools has to be installed for ogg target
+
+Tested on Debian Lenny/Squeeze/Wheezy.
+
+Usage: music_collection_sync.py [options] source_dir target_dir
+
+Options:
+  -h, --help            show this help message and exit
+  -l LOGLEVEL, --loglevel=LOGLEVEL
+                        set's the log level (ie. the amount of output) possible values: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  -f FORMAT, --format=FORMAT
+                        set the target format to mp3 or ogg (default is mp3)
+  -w, --target_win      convert the filenames to Windows convention (for example if you copy to a FAT Partition)
+  -d, --no_donation     suppress the donation message.
+  -s, --followlinks     By default the script will not walk down into symbolic links that resolve to directories. Set followlinks to visit directories pointed to by symlinks, on systems
+                        that support them.
+  -r, --resample        resample to 44.1KHz when converting
+  -m, --multiprocess    use multiprocessing to convert the files (default is false)
+  -p NUMBEROFPROCESSES, --numberofprocesses=NUMBEROFPROCESSES
+                        set the number of processes used to convert the files, ignored if multiprocess option is not active (default is the number of detected CPUs)
+
+License
+-------
+GPL v3
+
+Author/Maintainer
+-----------------
+Gregor Horvath, gh@gregor-horvath.com
+
+Contributors
+------------
+Markus Näsman <markus@botten.org> : ogg support
+Lionel Duriez : multiprocessing, added flags, windows support
+
